@@ -1,0 +1,2 @@
+#!/bin/bash
+(echo 'word_list = ['; sed -r 's/(.*)/"\1",/g' < words; echo '];') > words.js
