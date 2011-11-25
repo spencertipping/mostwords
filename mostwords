@@ -3466,7 +3466,9 @@ $(caterwaul.jquery(caterwaul.js_all())(function () {
   -se- $(window) /~keypress/ handle_keypress
 
   -where [board(rows)               = jquery [table.board] -se- rows *blank_word_row *![it /~append/ x] /seq,
-          blank_word_row(word)      = jquery in tr(td[n[word.length] *[Math.random() < 0.2 ? word.charAt(xi) : '_'] -seq -re- it.join('')]) *!word(word),
+          blank_word_row(word)      = jquery [tr(td.problem[n[word.length] *[Math.random() < 0.2 ? word.charAt(xi) : '_'] -seq -re- it.join('')], td(button.hint('Solution'))) *!word(word)]
+                                      -se- it.find('.hint') /~click/ "$(this).parents('tr').find('.problem') /~text/ word".qf,
+
           filled_td(word)           = jquery in td /text(word),
           guess(word)               = $('.board tr') |[$(x).data('word') === word && $(x)] |seq |re [it ? it.empty() /~append/ filled_td(word) : alert('#{word} is not on the board.')],
 
