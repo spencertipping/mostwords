@@ -3477,18 +3477,25 @@ $(caterwaul.jquery(caterwaul.js_all())(function () {
           handle_keypress(e)          = e.which === 13 ? $('button.guess').click() :
                                                          $('button.letter:contains("#{String.fromCharCode(e.which)}"):enabled').first().click(),
 
-          bench(b)                    = jquery [div.bench > table[jquery [tr] -se- b.split('') *![it /~append/ bench_letter(x)] /seq]
+          bench(b)                    = jquery [div.bench > table[jquery [tr.bench_letters] -se- b.split('') *![it /~append/ bench_letter(x)] /seq]
                                                           > div.word
-                                                          > button.guess('Guess')]
+                                                          > button.guess('Guess')
+                                                          > button.shuffle('Shuffle')]
 
-                                   -se- it.find('.guess')  /~click/ check_word
-                                   -se- it.find('.letter') /~click/ add_letter
+                                   -se- it.find('.guess')   /~click/ check_word
+                                   -se- it.find('.letter')  /~click/ add_letter
+                                   -se- it.find('.shuffle') /~click/ shuffle_bench
 
-                                -where [check_word()  = guess(word.text()) -se- word.empty() -se- reset_bench() -where [word = this /!word_space],
-                                        add_letter()  = $(this).attr('disabled', 'disabled') -se- word.text('#{word.text()}#{$(this).text()}') -where [word = this /!word_space],
+                                -where [check_word()    = guess(word.text()) -se- word.empty() -se- reset_bench() -where [word = this /!word_space],
+                                        add_letter()    = $(this).attr('disabled', 'disabled') -se- word.text('#{word.text()}#{$(this).text()}') -where [word = this /!word_space],
 
-                                        reset_bench() = $('.bench .letter').removeAttr('disabled'),
-                                        word_space(e) = $(e).parents('.bench').find('.word')],
+                                        reset_bench()   = $('.bench .letter').removeAttr('disabled'),
+                                        word_space(e)   = $(e).parents('.bench').find('.word'),
+
+                                        shuffle_bench() = (+tiles).sort(random) *![bench /~append/ x] -seq
+                                                  -where [bench    = $(this).parent().find('.bench-letters'),
+                                                          tiles    = bench.children(),
+                                                          random() = Math.random() < 0.5]],
 
           bench_letter(l)             = jquery in td(button.letter /text(l)),
 
@@ -3859,7 +3866,8 @@ meta::sdoc('html::index', <<'__');
       - pinclude pp::js::modules
     - end
     - style << end
-      .board {font-family: monospace; letter-spacing: 0.2em}
+      .board, .letter {font-family: 'Monaco', 'Inconsolata', 'Andale Mono', 'Lucida Console', monospace; font-size: 12pt}
+      .board {letter-spacing: 0.2em; padding-bottom: 20px}
       .board .problem {display: inline-block; padding-right: 10px; cursor: pointer}
       .difficulty {padding-top: 20px}
     - end
