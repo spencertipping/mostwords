@@ -2121,15 +2121,23 @@ caterwaul.words(caterwaul.js())(function ($) {
 // be formed. These words are then displayed as blanks until the user guesses them, at which point they are filled in. Words are sorted alphabetically, regardless of length.
 
 $(caterwaul.jquery(caterwaul.js_all())(function () {
-  $('body').empty() /~append/ jquery [div.wordgame, div.difficulty(button.easy('Trivially easy'), button.intermediate('Pleasantly challenging'), button.hard('Discouragingly difficult'))]
+  $('body').empty() /~append/ jquery [div.wordgame, div.difficulty
+                                                    > button.trivial('Trivially simple')
+                                                    > button.easy('Reasonably easy')
+                                                    > button.intermediate('Pleasantly challenging')
+                                                    > button.hard('Discouragingly difficult')
+                                                    > button.outrageous('Outrageously impossible')]
 
-  -se- $('.difficulty .easy')         /~click/ "make_board(3, 5, 7) -when- confirm('Start a new game?')".qf
-  -se- $('.difficulty .intermediate') /~click/ "make_board(5, 7, 8) -when- confirm('Start a new game?')".qf
-  -se- $('.difficulty .hard')         /~click/ "make_board(6, 9, 9) -when- confirm('Start a new game?')".qf
+  -se- $('.difficulty .trivial')      /~click/ "make_board(2, 4, 5)   -when- confirm('Start a new game?')".qf
+  -se- $('.difficulty .easy')         /~click/ "make_board(3, 5, 7)   -when- confirm('Start a new game?')".qf
+  -se- $('.difficulty .intermediate') /~click/ "make_board(5, 7, 8)   -when- confirm('Start a new game?')".qf
+  -se- $('.difficulty .hard')         /~click/ "make_board(6, 9, 9)   -when- confirm('Start a new game?')".qf
+  -se- $('.difficulty .outrageous')   /~click/ "make_board(8, 11, 11) -when- confirm('Start a new game?')".qf
   -se- $(window) /~keypress/ handle_keypress
 
   -where [board(problems)             = jquery [div.board] -se- problems *blank_problem *![it /~append/ x] /seq,
-          blank_problem(word)         = jquery [div.problem[n[word.length] *['_'] -seq -re- it.join('')] *!word(word)] -se- it /~click/ "$(this) /~text/ word".qf,
+          blank_problem(word)         = jquery [div.problem[n[word.length] *['_'] -seq -re- it.join('')] *!word(word)]
+                                        -se- it /~click/ "$(this) /~text/ word -when- confirm('Reveal this word?')".qf,
 
           filled_td(word)             = jquery in td /text(word),
           guess(word)                 = $('.board .problem') |[$(x).data('word') === word && $(x)] |seq |re [it ? it /~text/ word : alert('#{word} is not on the board.')],
