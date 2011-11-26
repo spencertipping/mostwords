@@ -3919,10 +3919,11 @@ meta::sdoc('html::index', <<'__');
       - pinclude pp::js::modules
     - end
     - style << end
-      .board, .letter {font-family: 'Monaco', 'Inconsolata', 'Andale Mono', 'Lucida Console', monospace; font-size: 12pt}
-      .board {letter-spacing: 0.2em; padding-bottom: 20px}
+      .board {letter-spacing: 0.2em; padding-bottom: 20px; font-family: 'Monaco', 'Inconsolata', 'Andale Mono', 'Lucida Console', monospace}
       .board .problem {display: inline-block; padding-right: 10px; cursor: pointer}
       .difficulty {padding-top: 20px}
+
+      button {font-size: 20pt; margin: 10px}
     - end
   - end
   - body << end
