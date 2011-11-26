@@ -3923,7 +3923,7 @@ meta::sdoc('html::index', <<'__');
       .board .problem {display: inline-block; padding-right: 10px; cursor: pointer}
       .difficulty {padding-top: 20px}
 
-      button {font-size: 20pt; margin: 10px}
+      button {font-size: 20pt; margin: 10px; min-width: 2em}
     - end
   - end
   - body << end
