@@ -2123,17 +2123,16 @@ caterwaul.words(caterwaul.js())(function ($) {
 $(caterwaul.jquery(caterwaul.js_all())(function () {
   $('body').empty() /~append/ jquery [div.wordgame, div.difficulty(button.easy('Trivially easy'), button.intermediate('Pleasantly challenging'), button.hard('Discouragingly difficult'))]
 
-  -se- $('.difficulty .easy')         /~click/ "make_board(3, 6, 7)".qf
-  -se- $('.difficulty .intermediate') /~click/ "make_board(5, 8, 8)".qf
-  -se- $('.difficulty .hard')         /~click/ "make_board(6, 9, 9)".qf
+  -se- $('.difficulty .easy')         /~click/ "make_board(3, 5, 7) -when- confirm('Start a new game?')".qf
+  -se- $('.difficulty .intermediate') /~click/ "make_board(5, 7, 8) -when- confirm('Start a new game?')".qf
+  -se- $('.difficulty .hard')         /~click/ "make_board(6, 9, 9) -when- confirm('Start a new game?')".qf
   -se- $(window) /~keypress/ handle_keypress
 
-  -where [board(rows)                 = jquery [table.board] -se- rows *blank_word_row *![it /~append/ x] /seq,
-          blank_word_row(word)        = jquery [tr(td.problem[n[word.length] *['_'] -seq -re- it.join('')], td(button.hint('Solution'))) *!word(word)]
-                                        -se- it.find('.hint') /~click/ "$(this).parents('tr').find('.problem') /~text/ word".qf,
+  -where [board(problems)             = jquery [div.board] -se- problems *blank_problem *![it /~append/ x] /seq,
+          blank_problem(word)         = jquery [div.problem[n[word.length] *['_'] -seq -re- it.join('')] *!word(word)] -se- it /~click/ "$(this) /~text/ word".qf,
 
           filled_td(word)             = jquery in td /text(word),
-          guess(word)                 = $('.board tr') |[$(x).data('word') === word && $(x)] |seq |re [it ? it.empty() /~append/ filled_td(word) : alert('#{word} is not on the board.')],
+          guess(word)                 = $('.board .problem') |[$(x).data('word') === word && $(x)] |seq |re [it ? it /~text/ word : alert('#{word} is not on the board.')],
 
           handle_keypress(e)          = e.which === 13 ? $('button.guess').click() :
                                                          $('button.letter:contains("#{String.fromCharCode(e.which)}"):enabled').first().click(),
@@ -2183,6 +2182,8 @@ $(caterwaul.jquery(caterwaul.js_all())(function () {
 </script>
 <style >
 .board {font-family: monospace; letter-spacing: 0.2em}
+.board .problem {display: inline-block; padding-right: 10px; cursor: pointer}
+.difficulty {padding-top: 20px}
 </style>
 </head>
 <body >
