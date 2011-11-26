@@ -3496,10 +3496,10 @@ be formed. These words are then displayed as blanks until the user guesses them,
 
 $(caterwaul.jquery(caterwaul.js_all())(function () {
   $('body').empty() /~append/ jquery [div.wordgame, div.difficulty
-                                                    > button.trivial('Trivially simple')
-                                                    > button.easy('Reasonably easy')
-                                                    > button.intermediate('Pleasantly challenging')
-                                                    > button.hard('Discouragingly difficult')
+                                                    > button.trivial('Trivially simple') > ' '
+                                                    > button.easy('Reasonably easy') > ' '
+                                                    > button.intermediate('Pleasantly challenging') > ' '
+                                                    > button.hard('Discouragingly difficult') > ' '
                                                     > button.outrageous('Outrageously impossible')]
 
   -se- $('.difficulty .trivial')      /~click/ "make_board(2, 4, 5)   -when- confirm('Start a new game?')".qf
@@ -3509,7 +3509,7 @@ $(caterwaul.jquery(caterwaul.js_all())(function () {
   -se- $('.difficulty .outrageous')   /~click/ "make_board(8, 11, 11) -when- confirm('Start a new game?')".qf
   -se- $(window) /~keypress/ handle_keypress
 
-  -where [board(problems)             = jquery [div.board] -se- problems *blank_problem *![it /~append/ x] /seq,
+  -where [board(problems)             = jquery [div.board] -se- problems *blank_problem *![it.append(x, ' ')] /seq,
           blank_problem(word)         = jquery [div.problem[n[word.length] *['_'] -seq -re- it.join('')] *!word(word)]
                                         -se- it /~click/ "$(this) /~text/ word -when- confirm('Reveal this word?')".qf,
 
