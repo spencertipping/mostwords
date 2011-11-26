@@ -1,2 +1,9 @@
-#!/bin/bash
-(echo 'word_list = ['; sed -r 's/(.*)/"\1",/g' < words; echo '];') > words.js
+#!/usr/bin/perl
+open my $fh, '<', 'words';
+my $words = join '', grep length, <$fh>;
+close $fh;
+
+$words =~ s/\n/","/g;
+open my $out, '>', 'words.js';
+print $out 'word_list = ["', $words, '"];', "\n";
+close $out;
